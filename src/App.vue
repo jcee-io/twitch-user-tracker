@@ -12,6 +12,12 @@
           <div v-on:click="switcher" class="status-select"><span>Online</span></div>
           <div v-on:click="switcher" class="status-select"><span>Offline</span></div>
         </div>
+        <div>
+          <form>
+            <input class="form-control">
+            <button class="status-select">Add</button>
+          </form>
+        </div>
         <div id="mini-box" >
           <div class="user user-entry" v-if="view === 'All' || view ==='Online'" v-for="user in online">
             <img v-bind:src="user.logo">
@@ -23,7 +29,6 @@
               </span>
             </p>      
           </div>
-
           <div class="user user-entry-offline" v-if="view === 'All' || view ==='Offline'" v-for="user in offline">
             <img v-bind:src="user.logo">
             <p>
@@ -117,6 +122,12 @@ export default {
     padding: 40px 70px;
   }
 
+  form {
+    display: flex;
+    height: 35px;
+    padding: 0 20px;
+    transform: translateY(10px);
+  }
   #main-box {
     background: rgba(255, 250, 181, 0.8);
     height: 90vh;

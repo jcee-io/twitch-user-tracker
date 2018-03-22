@@ -1,4 +1,4 @@
-# Vue CLI Simple Webpack Full Stack Boilerplate
+# Twitch User Tracker
 
 > This is orignally from the Vue CLI, but with an express server attached. 
 

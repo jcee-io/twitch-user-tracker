@@ -11,9 +11,13 @@
           <p>Viewing: {{ view }}</p>
         </div>
         <div id="mini-box" >
-          <p v-for="user in users">
+          <p v-if="view === 'All' || view ==='Online'" v-for="user in online">
             {{ user.username }}
-            {{ user.stream.game || offline }}
+            {{ user.stream.game }}
+          </p>
+          <p v-if="view === 'All' || view ==='Offline'" v-for="user in offline">
+            {{ user.username }}
+            {{ user.stream.game }}
           </p>
         </div> 
       </div>
@@ -29,6 +33,8 @@ export default {
   data () {
     return {
       users: ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"],
+      online: [],
+      offline: [],
       view: 'All',
       api: 'https://wind-bow.glitch.me/twitch-api/streams/'
     }
@@ -50,6 +56,9 @@ export default {
             d.stream = {
               game: 'Offline'
             }
+            this.offline.push(d);
+          } else {
+            this.online.push(d);
           }
         });
       });

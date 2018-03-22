@@ -8,12 +8,13 @@
           <div v-on:click="switcher" class="status-select"><span>Offline</span></div>
         </div>
         <div id="status-box">
-          <p>Viewing: {{ view }}</p>
+          <p v-if="loading">Loading Users...</p>
+          <p v-if="!loading">Viewing: {{ view }}</p>
         </div>
         <div id="mini-box" >
           <div class="user user-entry" v-if="view === 'All' || view ==='Online'" v-for="user in online">
             <p>
-              <strong><a class="username" v-bind:href="`http://twitch.tv/${user.username}`" target="_blank">{{ user.username }}</a></strong> -
+              <strong><a class="username" v-bind:href="twitch + user.username" target="_blank">{{ user.username }}</a></strong> -
               {{ user.stream.game }}
               <span class="user-status">
                  {{ user.stream.channel.status }}
@@ -23,7 +24,7 @@
 
           <div class="user user-entry-offline" v-if="view === 'All' || view ==='Offline'" v-for="user in offline">
             <p>
-              <strong><a class="username" v-bind:href="`http://twitch.tv/${user.username}`" target="_blank">{{ user.username }}</a></strong> -
+              <strong><a class="username" v-bind:href="twitch + user.username" target="_blank">{{ user.username }}</a></strong> -
               {{ user.stream.game }}
             </p>      
           </div>
@@ -41,9 +42,11 @@ export default {
   data () {
     return {
       users: ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"],
+      twitch: 'http://twitch.tv/',
       online: [],
       offline: [],
       view: 'All',
+      loading: true,
       api: 'https://wind-bow.glitch.me/twitch-api/streams/'
     }
   },
@@ -69,6 +72,8 @@ export default {
             this.online.push(d);
           }
         });
+
+        this.loading = false;
       });
   },
   methods: {

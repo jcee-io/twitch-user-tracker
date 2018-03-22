@@ -2,11 +2,7 @@
   <div id="app">
     <div id="main-box">
       <div id="main-box-container">
-        <h1 id="header">Twitch User Tracker</h1>
-        <div id="status-box">
-          <p v-if="loading">Loading Users...</p>
-          <p v-if="!loading">Viewing: {{ view }}</p>
-        </div>
+        <heading :view="view" :loading="loading"></heading>
         <div id="button-box">
           <div v-on:click="switcher" class="status-select"><span>All</span></div>
           <div v-on:click="switcher" class="status-select"><span>Online</span></div>
@@ -45,8 +41,12 @@
 
 <script>
 import Promise from 'bluebird'
+import heading from './Header'
 
 export default {
+  components: {
+    heading
+  },
   data () {
     return {
       users: ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"],
@@ -103,12 +103,6 @@ export default {
 </script>
 
 <style>
-  #header {
-    text-align: center;
-    color: green;
-    margin: 20px 0 0 0;
-    font-size: 3em;
-  }
   img {
     width: 50px;
     display: inline-block;
@@ -173,16 +167,7 @@ export default {
     display: block;
     margin-top: 3%;
   }
-  #status-box {
-    padding-bottom: 20px;
-    text-align: center;
-    color: green;
-  }
 
-  #status-box p {
-    margin: 0;
-    font-size: 1.5em;
-  }
   #mini-box {
     height: 600px;
     padding: 20px;

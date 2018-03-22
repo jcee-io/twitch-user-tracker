@@ -10,8 +10,11 @@
         <div id="status-box">
           <p>Viewing: {{ view }}</p>
         </div>
-        <div id="mini-box">
-          
+        <div id="mini-box" >
+          <p v-for="user in users">
+            {{ user.username }}
+            {{ user.stream.game || offline }}
+          </p>
         </div> 
       </div>
       
@@ -39,7 +42,16 @@ export default {
 
     Promise.all(promises)
       .then(data => {
-        this.users = data.map(d => d.body);
+        this.users = data.map((d, i) => ({ username: this.users[i], ...d.body }));
+        console.log(this.users);
+
+        this.users.forEach(d => {
+          if(!d.stream) {
+            d.stream = {
+              game: 'Offline'
+            }
+          }
+        });
       });
   },
   methods: {
@@ -109,5 +121,11 @@ export default {
   #mini-box {
     background: rgba(255, 248, 160, 0.6);
     height: 700px;
+    padding: 20px;
+  }
+
+  #mini-box p {
+    margin: 0;
+    margin-bottom: 10px;
   }
 </style>

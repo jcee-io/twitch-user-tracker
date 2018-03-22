@@ -13,7 +13,7 @@
         <div id="mini-box" >
           <div class="user user-entry" v-if="view === 'All' || view ==='Online'" v-for="user in online">
             <p>
-              <strong>{{ user.username }}</strong> -
+              <strong><a class="username" v-bind:href="`http://twitch.tv/${user.username}`" target="_blank">{{ user.username }}</a></strong> -
               {{ user.stream.game }}
               <span class="user-status">
                  {{ user.stream.channel.status }}
@@ -23,7 +23,7 @@
 
           <div class="user user-entry-offline" v-if="view === 'All' || view ==='Offline'" v-for="user in offline">
             <p>
-              <strong>{{ user.username }}</strong> -
+              <strong><a class="username" v-bind:href="`http://twitch.tv/${user.username}`" target="_blank">{{ user.username }}</a></strong> -
               {{ user.stream.game }}
             </p>      
           </div>
@@ -97,14 +97,14 @@ export default {
     height: auto;
     border-radius: 10px;
     overflow: hidden;
-    background: rgba(255, 248, 160, 0.6)
+    background: rgba(255, 248, 160, 0.6);
   }
 
   #button-box {
     display: flex;
     justify-content: space-around;
     background: green;
-    height: 40px;
+    height: 55px;
     margin: 0 auto;
     padding: 10px 0;
   }
@@ -127,7 +127,7 @@ export default {
   }
   .status-select span {
     display: block;
-    margin-top: 7%;
+    margin-top: 3%;
   }
   #status-box {
     padding-top: 20px;
@@ -162,5 +162,15 @@ export default {
   }
   .user-entry-offline {
     background: grey;
+  }
+
+  .username {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .username:hover {
+    text-decoration: none;
+    color: rgba(255, 248, 160, 0.6);
   }
 </style>

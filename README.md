@@ -1,6 +1,6 @@
-# twitch-api-project
+# Vue CLI Simple Webpack Full Stack Boilerplate
 
-> A Vue.js project
+> This is orignally from the Vue CLI, but with an express server attached. 
 
 ## Build Setup
 
@@ -8,8 +8,9 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
-npm run dev
+# serve with hot reload at localhost:8080 (comes with express server)
+npm start 
+npm run dev // on another terminal window
 
 # build for production with minification
 npm run build

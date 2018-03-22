@@ -3,18 +3,14 @@
     <div id="main-box">
       <div id="main-box-container">
         <heading :view="view" :loading="loading"></heading>
-        <div id="button-box">
-          <div v-on:click="switcher" class="status-select"><span>All</span></div>
-          <div v-on:click="switcher" class="status-select"><span>Online</span></div>
-          <div v-on:click="switcher" class="status-select"><span>Offline</span></div>
-        </div>
+        <button-box v-on:switcher="switcher($event)"></button-box>
         <div>
           <form>
             <input class="form-control">
-            <button class="status-select">Add</button>
+            <button class="btn btn-outline-dark">Add</button>
           </form>
         </div>
-        <div id="mini-box" >
+        <div id="mini-box">
           <div class="user user-entry" v-if="view === 'All' || view ==='Online'" v-for="user in online">
             <img v-bind:src="user.logo">
             <p>
@@ -41,11 +37,13 @@
 
 <script>
 import Promise from 'bluebird'
-import heading from './Header'
+import Header from './Header'
+import ButtonBox from './ButtonBox'
 
 export default {
   components: {
-    heading
+    'heading': Header,
+    'button-box': ButtonBox
   },
   data () {
     return {
@@ -82,8 +80,6 @@ export default {
             this.online.push(d);
           }
         });
-
-        
 
         return Promise.all(images); 
       })
@@ -136,36 +132,6 @@ export default {
     border-radius: 10px;
     overflow: hidden;
     background: rgba(255, 248, 160, 0.6);
-  }
-
-  #button-box {
-    display: flex;
-    justify-content: space-around;
-    background: green;
-    height: 55px;
-    margin: 0 auto;
-    padding: 10px 0;
-  }
-
-  .status-select {
-    border-radius: 10px ;
-    width: 120px;
-    height: 100%;
-    margin: 0 10px;
-    background: rgba(255, 248, 160, 0.7);
-    color: green;
-    text-align: center;
-    font-size: 20px;
-    cursor: pointer;
-    transition-duration: 200ms;
-  } 
-
-  .status-select:hover {
-    background: rgba(255, 248, 160, 1);
-  }
-  .status-select span {
-    display: block;
-    margin-top: 3%;
   }
 
   #mini-box {

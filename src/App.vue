@@ -13,6 +13,7 @@
         </div>
         <div id="mini-box" >
           <div class="user user-entry" v-if="view === 'All' || view ==='Online'" v-for="user in online">
+            <img v-bind:src="user.logo">
             <p>
               <strong><a class="username" v-bind:href="twitch + user.username" target="_blank">{{ user.username }}</a></strong> -
               {{ user.stream.game }}
@@ -23,6 +24,7 @@
           </div>
 
           <div class="user user-entry-offline" v-if="view === 'All' || view ==='Offline'" v-for="user in offline">
+            <img v-bind:src="user.logo">
             <p>
               <strong><a class="username" v-bind:href="twitch + user.username" target="_blank">{{ user.username }}</a></strong> -
               {{ user.stream.game }}
@@ -47,20 +49,22 @@ export default {
       offline: [],
       view: 'All',
       loading: true,
-      api: 'https://wind-bow.glitch.me/twitch-api/streams/'
+      api: 'https://wind-bow.glitch.me/twitch-api/streams/',
+      profileApi: 'https://wind-bow.glitch.me/twitch-api/users/'
     }
   },
   created(){
     const promises = [];
-
+    const images = [];
     for(let user of this.users) {
       promises.push(this.$http.get(this.api + user));
+      images.push(this.$http.get(this.profileApi + user));
     }
 
     Promise.all(promises)
       .then(data => {
         this.users = data.map((d, i) => ({ username: this.users[i], ...d.body }));
-        console.log(this.users);
+        
 
         this.users.forEach(d => {
           if(!d.stream) {
@@ -72,6 +76,14 @@ export default {
             this.online.push(d);
           }
         });
+
+        
+
+        return Promise.all(images); 
+      })
+      .then(data => {
+        const logos = data.map(d => d.body.logo);
+        this.users.forEach((d, i) => d.logo = logos[i]);
 
         this.loading = false;
       });
@@ -85,6 +97,14 @@ export default {
 </script>
 
 <style>
+  img {
+    width: 50px;
+    display: inline-block;
+    margin: 0;
+    border-radius: 100px;
+    border-style: solid;
+    border-color: rgba(255, 248, 160, 0.6);
+  }
   body {
     background: green;
     padding: 40px 70px;
@@ -147,14 +167,16 @@ export default {
   #mini-box {
     height: 600px;
     padding: 20px;
+    overflow: scroll;
   }
 
   #mini-box p {
-    margin: 0;
+    
+    display: inline-block;
   }
 
   .user {
-    padding: 10px 5px;
+    padding: 0 5px;
     margin-bottom: 10px;
     border-radius: 10px;
   }
@@ -163,12 +185,22 @@ export default {
     font-size: 15px;
   }
   .user-entry {
+
     background: green;
+  }
+
+  .user-entry img {
+    transform: translateY(-12px);
+  }
+  .user-entry p {
+    margin: 2% 0;
   }
   .user-entry-offline {
     background: grey;
   }
-
+  .user-entry-offline p {
+    margin: 4% 0;
+  }
   .username {
     text-decoration: none;
     color: inherit;

@@ -20,15 +20,27 @@
 </template>
 
 <script>
+import Promise from 'bluebird'
+
 export default {
   data () {
     return {
       users: ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"],
-      view: 'All'
+      view: 'All',
+      api: 'https://wind-bow.glitch.me/twitch-api/streams/'
     }
   },
   created(){
+    const promises = [];
 
+    for(let user of this.users) {
+      promises.push(this.$http.get(this.api + user));
+    }
+
+    Promise.all(promises)
+      .then(data => {
+        this.users = data.map(d => d.body);
+      });
   },
   methods: {
     switcher: function(event) {

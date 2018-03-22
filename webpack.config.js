@@ -46,10 +46,12 @@ module.exports = {
     extensions: ['*', '.js', '.vue', '.json']
   },
   devServer: {
+    proxy: {
+      '**': 'http://localhost:3000'
+    },
     historyApiFallback: true,
     noInfo: true,
     overlay: true
-    proxy: {'**': 'http://localhost:3000'}
   },
   performance: {
     hints: false

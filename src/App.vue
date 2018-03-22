@@ -11,14 +11,22 @@
           <p>Viewing: {{ view }}</p>
         </div>
         <div id="mini-box" >
-          <p v-if="view === 'All' || view ==='Online'" v-for="user in online">
-            {{ user.username }}
-            {{ user.stream.game }}
-          </p>
-          <p v-if="view === 'All' || view ==='Offline'" v-for="user in offline">
-            {{ user.username }}
-            {{ user.stream.game }}
-          </p>
+          <div class="user user-entry" v-if="view === 'All' || view ==='Online'" v-for="user in online">
+            <p>
+              <strong>{{ user.username }}</strong> -
+              {{ user.stream.game }}
+              <span class="user-status">
+                 {{ user.stream.channel.status }}
+              </span>
+            </p>      
+          </div>
+
+          <div class="user user-entry-offline" v-if="view === 'All' || view ==='Offline'" v-for="user in offline">
+            <p>
+              <strong>{{ user.username }}</strong> -
+              {{ user.stream.game }}
+            </p>      
+          </div>
         </div> 
       </div>
       
@@ -84,14 +92,17 @@ export default {
   }
 
   #main-box-container {
-    width: 400px;
+    width: 600px;
     margin: 4vh auto;
     height: auto;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(255, 248, 160, 0.6)
   }
 
   #button-box {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     background: green;
     height: 40px;
     margin: 0 auto;
@@ -99,6 +110,7 @@ export default {
   }
 
   .status-select {
+    border-radius: 10px ;
     width: 120px;
     height: 100%;
     margin: 0 10px;
@@ -118,7 +130,7 @@ export default {
     margin-top: 7%;
   }
   #status-box {
-    background: rgba(255, 248, 160, 0.6);
+    padding-top: 20px;
     text-align: center;
     color: green;
   }
@@ -128,13 +140,27 @@ export default {
     font-size: 1.5em;
   }
   #mini-box {
-    background: rgba(255, 248, 160, 0.6);
-    height: 700px;
+    height: 600px;
     padding: 20px;
   }
 
   #mini-box p {
     margin: 0;
+  }
+
+  .user {
+    padding: 10px 5px;
     margin-bottom: 10px;
+    border-radius: 10px;
+  }
+  .user-status {
+    display: block;
+    font-size: 15px;
+  }
+  .user-entry {
+    background: green;
+  }
+  .user-entry-offline {
+    background: grey;
   }
 </style>

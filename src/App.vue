@@ -1,17 +1,20 @@
 <template>
   <div id="app">
     <div id="main-box">
-      <div id="button-box">
-        <div class="status-select"></div>
-        <div class="status-select"></div>
-        <div class="status-select"></div>
+      <div id="main-box-container">
+        <div id="button-box">
+          <div v-on:click="switcher" class="status-select"><span>All</span></div>
+          <div v-on:click="switcher" class="status-select"><span>Online</span></div>
+          <div v-on:click="switcher" class="status-select"><span>Offline</span></div>
+        </div>
+        <div id="status-box">
+          <p>Viewing: {{ view }}</p>
+        </div>
+        <div id="mini-box">
+          
+        </div> 
       </div>
-      <div id="status-box">
-        <p>Viewing: {{ view }}</p>
-      </div>
-      <div id="mini-box">
-        
-      </div>
+      
     </div>
   </div>
 </template>
@@ -22,6 +25,14 @@ export default {
     return {
       users: ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"],
       view: 'All'
+    }
+  },
+  created(){
+
+  },
+  methods: {
+    switcher: function(event) {
+      this.view = event.target.textContent;
     }
   }
 }
@@ -39,17 +50,18 @@ export default {
     overflow: hidden;
   }
 
-
-  #button-box, #mini-box, #status-box {
+  #main-box-container {
     width: 400px;
+    margin: 4vh auto;
+    height: auto;
   }
+
   #button-box {
     display: flex;
     justify-content: space-between;
     background: green;
     height: 40px;
     margin: 0 auto;
-    margin-top: 2.5%;
     padding: 10px 0;
   }
 
@@ -57,13 +69,23 @@ export default {
     width: 120px;
     height: 100%;
     margin: 0 10px;
-    background: rgba(255, 248, 160, 0.4);
+    background: rgba(255, 248, 160, 0.7);
+    color: green;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition-duration: 200ms;
   } 
 
+  .status-select:hover {
+    background: rgba(255, 248, 160, 1);
+  }
+  .status-select span {
+    display: block;
+    margin-top: 7%;
+  }
   #status-box {
     background: rgba(255, 248, 160, 0.6);
-    margin: 0 auto;
-    height: auto;
     text-align: center;
     color: green;
   }
@@ -75,6 +97,5 @@ export default {
   #mini-box {
     background: rgba(255, 248, 160, 0.6);
     height: 700px;
-    margin: 0 auto 5% auto;
   }
 </style>

@@ -11,15 +11,8 @@
           </form>
         </div>
         <div id="mini-box">
-          <online-users v-if="!loading" :users="online" :view="view"></online-users>
-          <offline-users v-if="!loading" :users="offline" :view="view"></offline-users>
-          <div class="user user-entry-offline" v-if="view === 'All' || view ==='Offline'" v-for="user in offline">
-            <img v-bind:src="user.logo">
-            <p>
-              <strong><a class="username" v-bind:href="twitch + user.username" target="_blank">{{ user.username }}</a></strong> -
-              {{ user.stream.game }}
-            </p>      
-          </div>
+          <online-users v-if="!loading" :users="online" :view="view" :twitch="twitch"></online-users>
+          <offline-users v-if="!loading" :users="offline" :view="view" :twitch="twitch"></offline-users>
         </div> 
       </div>
       
@@ -32,12 +25,13 @@ import Promise from 'bluebird'
 import Header from './Header'
 import ButtonBox from './ButtonBox'
 import OnlineUsers from './OnlineUsers'
-
+import OfflineUsers from './OfflineUsers'
 export default {
   components: {
     'heading': Header,
     'button-box': ButtonBox,
-    'online-users': OnlineUsers
+    'online-users': OnlineUsers,
+    'offline-users': OfflineUsers
   },
   data () {
     return {

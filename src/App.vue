@@ -40,6 +40,7 @@ export default {
       newUser: '',
       online: [],
       offline: [],
+      logos: [],
       view: 'All',
       loading: true,
       api: 'https://wind-bow.glitch.me/twitch-api/streams/',
@@ -57,27 +58,13 @@ export default {
     Promise.all(promises)
       .then(data => {
         this.users = data.map((d, i) => ({ username: this.users[i], ...d.body }));
-        
-
-        this.users.forEach(d => {
-          if(!d.stream) {
-            d.stream = {
-              game: 'Offline'
-            }
-            this.offline.push(d);
-          } else {
-            if(d.stream.channel.status.length > 55) {
-              d.stream.channel.status = d.stream.channel.status.slice(0,55) + '...';
-            }
-            this.online.push(d);
-          }
-        });
 
         return Promise.all(images); 
       })
       .then(data => {
-        const logos = data.map(d => d.body.logo);
-        this.users.forEach((d, i) => d.logo = logos[i]);
+        this.logos = data.map(d => d.body.logo);
+
+        this.users.forEach(this.configureUser);
 
         this.loading = false;
       });
@@ -86,8 +73,25 @@ export default {
     switcher: function(event) {
       this.view = event.target.textContent;
     },
+    configureUser: function(d, i) {
+      if(!d.stream) {
+        d.stream = { game: 'Offline' };
+        this.offline.push(d);
+      } else {
+        if(d.stream.channel.status.length > 55) {
+          d.stream.channel.status = d.stream.channel.status.slice(0,55) + '...';
+        }
+        this.online.push(d);
+      }
+
+      d.logo = this.logos[i];
+    },
     insertUser: function(event) {
       console.log(this.newUser);
+      this.$http.get(this.api + this.newUser)
+        .then(data => {
+          console.log(data);
+        });
     }
   }
 }

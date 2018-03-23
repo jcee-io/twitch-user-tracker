@@ -87,10 +87,38 @@ export default {
       d.logo = this.logos[i];
     },
     insertUser: function(event) {
-      console.log(this.newUser);
-      this.$http.get(this.api + this.newUser)
-        .then(data => {
-          console.log(data);
+      let logo;
+      let username;
+
+      this.$http.get(this.profileApi + this.newUser)
+        .then(({ body }) => {
+          if(body.error) {
+            throw 'Invalid User';
+          }
+
+          logo = body.logo;
+          username = body.display_name;
+
+          console.log(body);
+
+          return this.$http.get(this.api + this.newUser);
+        })
+        .then(({ body }) => {
+          let user = body;
+          user.logo = logo;
+          user.username = username;
+          if(!user.stream) {
+            user.stream = { game: 'Offline' };
+            this.offline.push(user)
+          } else {
+            if(user.stream.channel.status.length > 55) {
+              user.stream.channel.status = user.stream.channel.status.slice(0,55) + '...';
+            }
+            this.online.push(user);   
+          }    
+        })
+        .catch(e => {
+          alert(e);
         });
     }
   }

@@ -11,6 +11,7 @@
           </form>
         </div>
         <div id="mini-box">
+          <h1 v-if="!(offline.length + online.length)">There are no users.</h1>
           <online-users v-on:delete="deleteUser($event, 'online')" v-if="!loading" :users="online" :view="view" :twitch="twitch"></online-users>
           <offline-users v-on:delete="deleteUser($event, 'offline')" v-if="!loading" :users="offline" :view="view" :twitch="twitch"></offline-users>
         </div> 
@@ -48,6 +49,7 @@ export default {
     }
   },
   created(){
+    this.users = [];
     const promises = [];
     const images = [];
     for(let user of this.users) {
@@ -176,6 +178,11 @@ export default {
     display: inline-block;
   }
 
+  #mini-box h1 {
+    color: green;
+    text-align: center;
+    font-size: 2em;
+  }
   .user {
     padding: 0 5px;
     margin-bottom: 10px;

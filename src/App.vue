@@ -11,6 +11,7 @@
           </form>
         </div>
         <div id="mini-box">
+          <online-users :users="online"></online-users>
           <div class="user user-entry" v-if="view === 'All' || view ==='Online'" v-for="user in online">
             <img v-bind:src="user.logo">
             <p>
@@ -21,6 +22,7 @@
               </span>
             </p>      
           </div>
+          <offline-users :users="offline"></offline-users>
           <div class="user user-entry-offline" v-if="view === 'All' || view ==='Offline'" v-for="user in offline">
             <img v-bind:src="user.logo">
             <p>
@@ -77,6 +79,9 @@ export default {
             }
             this.offline.push(d);
           } else {
+            if(d.stream.channel.status.length > 55) {
+              d.stream.channel.status = d.stream.channel.status.slice(0,55) + '...';
+            }
             this.online.push(d);
           }
         });

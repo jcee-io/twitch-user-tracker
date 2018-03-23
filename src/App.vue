@@ -146,23 +146,7 @@ export default {
     display: block;
     font-size: 15px;
   }
-  .user-entry {
 
-    background: green;
-  }
-
-  .user-entry img {
-    transform: translateY(-12px);
-  }
-  .user-entry p {
-    margin: 2% 0;
-  }
-  .user-entry-offline {
-    background: grey;
-  }
-  .user-entry-offline p {
-    margin: 4% 0;
-  }
   .username {
     text-decoration: none;
     color: inherit;

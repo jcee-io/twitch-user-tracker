@@ -18,5 +18,13 @@
 	};
 </script>
 <style scoped>
-	
+  .user-entry {
+    background: green;
+  }
+  .user-entry img {
+    transform: translateY(-12px);
+  }
+  .user-entry p {
+    margin: 2% 0;
+  }	
 </style>

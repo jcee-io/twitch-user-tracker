@@ -15,5 +15,10 @@
 	};
 </script>
 <style scoped>
-	
+  .user-entry-offline {
+    background: grey;
+  }
+  .user-entry-offline p {
+    margin: 4% 0;
+  }
 </style>

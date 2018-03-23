@@ -8,13 +8,19 @@
         <span class="user-status">
            {{ user.stream.channel.status }}
         </span>
-      </p>      
+      </p>
+      <button v-on:click="deleteUser(user.username)" class="user-btn btn btn-success">Delete</button>  
     </div>
 	</div>	
 </template>
 <script>
 	export default {
-		props: ['users', 'view', 'twitch']
+		props: ['users', 'view', 'twitch'],
+		methods: {
+			deleteUser: function(username) {
+				this.$emit('delete', username);
+			}
+		}
 	};
 </script>
 <style scoped>

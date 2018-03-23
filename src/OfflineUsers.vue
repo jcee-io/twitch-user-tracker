@@ -5,13 +5,19 @@
       <p>
         <strong><a class="username" v-bind:href="twitch + user.username" target="_blank">{{ user.username }}</a></strong> -
         {{ user.stream.game }}
-      </p>      
+      </p> 
+      <button v-on:click="deleteUser(user.username)"  class="user-btn btn btn-success">Delete</button>     
     </div>
 	</div>	
 </template>
 <script>
 	export default {
-		props: ['users', 'view', 'twitch']
+		props: ['users', 'view', 'twitch'],
+		methods: {
+			deleteUser: function(username) {
+				this.$emit('delete', username);
+			}
+		}
 	};
 </script>
 <style scoped>

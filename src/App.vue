@@ -11,8 +11,8 @@
           </form>
         </div>
         <div id="mini-box">
-          <online-users v-if="!loading" :users="online" :view="view" :twitch="twitch"></online-users>
-          <offline-users v-if="!loading" :users="offline" :view="view" :twitch="twitch"></offline-users>
+          <online-users v-on:delete="deleteUser($event, 'online')" v-if="!loading" :users="online" :view="view" :twitch="twitch"></online-users>
+          <offline-users v-on:delete="deleteUser($event, 'offline')" v-if="!loading" :users="offline" :view="view" :twitch="twitch"></offline-users>
         </div> 
       </div>
       
@@ -78,8 +78,8 @@ export default {
         d.stream = { game: 'Offline' };
         this.offline.push(d);
       } else {
-        if(d.stream.channel.status.length > 55) {
-          d.stream.channel.status = d.stream.channel.status.slice(0,55) + '...';
+        if(d.stream.channel.status.length > 45) {
+          d.stream.channel.status = d.stream.channel.status.slice(0,45) + '...';
         }
         this.online.push(d);
       }
@@ -111,8 +111,8 @@ export default {
             user.stream = { game: 'Offline' };
             this.offline.push(user)
           } else {
-            if(user.stream.channel.status.length > 55) {
-              user.stream.channel.status = user.stream.channel.status.slice(0,55) + '...';
+            if(user.stream.channel.status.length > 45) {
+              user.stream.channel.status = user.stream.channel.status.slice(0,45) + '...';
             }
             this.online.push(user);   
           }    
@@ -120,6 +120,9 @@ export default {
         .catch(e => {
           alert(e);
         });
+    },
+    deleteUser: function(username, arrayType) {
+      this[arrayType] = this[arrayType].filter(user => user.username !== username);
     }
   }
 }
@@ -182,7 +185,10 @@ export default {
     display: block;
     font-size: 15px;
   }
-
+  .user-btn {
+    float: right;
+    transform: translate(-5px, 13px);
+  }
   .username {
     text-decoration: none;
     color: inherit;

@@ -5,8 +5,8 @@
         <heading :view="view" :loading="loading"></heading>
         <button-box v-on:switcher="switcher($event)"></button-box>
         <div>
-          <form>
-            <input class="form-control">
+          <form v-on:submit.prevent="insertUser">
+            <input v-model="newUser" class="form-control">
             <button class="btn btn-outline-dark">Add</button>
           </form>
         </div>
@@ -37,6 +37,7 @@ export default {
     return {
       users: ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"],
       twitch: 'http://twitch.tv/',
+      newUser: '',
       online: [],
       offline: [],
       view: 'All',
@@ -84,6 +85,9 @@ export default {
   methods: {
     switcher: function(event) {
       this.view = event.target.textContent;
+    },
+    insertUser: function(event) {
+      console.log(this.newUser);
     }
   }
 }

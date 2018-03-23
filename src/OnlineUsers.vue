@@ -14,7 +14,7 @@
 </template>
 <script>
 	export default {
-		props: ['users', 'view']
+		props: ['users', 'view', 'twitch']
 	};
 </script>
 <style scoped>

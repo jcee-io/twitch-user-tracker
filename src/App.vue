@@ -4,7 +4,7 @@
       <div id="main-box-container">
         <heading :view="view" :loading="loading"></heading>
         <button-box v-on:switcher="switcher($event)"></button-box>
-        <div>
+        <div id="form-box">
           <form v-on:submit.prevent="insertUser">
             <input v-model="newUser" class="form-control">
             <button class="btn btn-outline-dark">Add</button>
@@ -178,7 +178,9 @@ export default {
     overflow: hidden;
     background: rgba(255, 248, 160, 0.6);
   }
-
+  #form-box {
+    height: 55px;
+  }
   #mini-box {
     height: 600px;
     padding: 20px;

@@ -50,20 +50,19 @@ export default {
     }
   },
   created(){
-    this.users = JSON.parse(localStorage.getItem('users')) || [];
-    this.usernames = JSON.parse(localStorage.getItem('users')) || [];
-
     const promises = [];
     const images = [];
 
-    for(let user of this.users) {
-      promises.push(this.$http.get(this.api + user));
-      images.push(this.$http.get(this.profileApi + user));
-    }
-
     this.$http.get('/users')
       .then(data => {
-        console.log(data);
+        this.users = data.body;
+        this.usernames = data.body;
+
+      for(let user of this.users) {
+        promises.push(this.$http.get(this.api + user));
+        images.push(this.$http.get(this.profileApi + user));
+      }
+
         return Promise.all(promises);
       })
       .then(data => {
@@ -110,8 +109,6 @@ export default {
           username = body.display_name;
 
           this.usernames.push(username);
-          localStorage.setItem('users', JSON.stringify(this.usernames));
-          console.log(this.users);
 
           return this.$http.get(this.api + this.newUser);
         })
@@ -139,9 +136,7 @@ export default {
       this[arrayType] = this[arrayType].filter(user => user.username !== username);
       this.usernames = this.usernames.filter(user => user !== username);
 
-      console.log(this.usernames);
-
-      localStorage.setItem('users', JSON.stringify(this.usernames));
+      this.$http.delete(`/users/${username}`)
     }
   }
 }

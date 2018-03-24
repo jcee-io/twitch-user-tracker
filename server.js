@@ -6,11 +6,11 @@ const redis = Promise.promisifyAll(require('redis'));
 const publicIp = require('public-ip');
 
 const app = express();
-const client = redis.createClient();
+const client = redis.createClient(process.env.REDIS_URL);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.resolve(__dirname, 'index.html')));
+app.use(express.static(path.resolve(__dirname)));
 
 app.get('/users', (req, res) => {
 	let globalIp;
@@ -66,6 +66,7 @@ app.post('/add/:newUser', (req, res) => {
 
 
 app.get('*', (req, res) => {
+	console.log(req.params);
   res.sendFile(path.resolve(__dirname, 'index.html'));
 });
 

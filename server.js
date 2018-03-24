@@ -21,6 +21,18 @@ app.get('/users', (req, res) => {
 	  });
 });
 
+app.delete('/users/:username', (req, res) => {
+	client.getAsync('users')
+	  .then(data => {
+	  	data = JSON.parse(data);
+	  	data = data.filter(username => username !== req.params.username);
+	  	data = JSON.stringify(data);
+	  	return client.setAsync('users', data);
+	  })
+	  .then(console.log);
+	  res.sendStatus(200);
+});
+
 app.post('/add/:newUser', (req, res) => {
 	console.log(req.params);
 	client.getAsync('users')

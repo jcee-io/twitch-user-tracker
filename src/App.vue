@@ -61,7 +61,11 @@ export default {
       images.push(this.$http.get(this.profileApi + user));
     }
 
-    Promise.all(promises)
+    this.$http.get('/users')
+      .then(data => {
+        console.log(data);
+        return Promise.all(promises);
+      })
       .then(data => {
         this.users = data.map((d, i) => ({ username: this.users[i], ...d.body }));
 
@@ -124,6 +128,8 @@ export default {
             }
             this.online.push(user);   
           }    
+
+          return this.$http.post(`/add/${this.newUser}`);
         })
         .catch(e => {
           alert(e);

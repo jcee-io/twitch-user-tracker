@@ -37,6 +37,7 @@ export default {
   data () {
     return {
       users: ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"],
+      usernames: [],
       twitch: 'http://twitch.tv/',
       newUser: '',
       online: [],
@@ -49,9 +50,12 @@ export default {
     }
   },
   created(){
-    this.users = [];
+    this.users = JSON.parse(localStorage.getItem('users')) || [];
+    this.usernames = JSON.parse(localStorage.getItem('users')) || [];
+
     const promises = [];
     const images = [];
+
     for(let user of this.users) {
       promises.push(this.$http.get(this.api + user));
       images.push(this.$http.get(this.profileApi + user));
@@ -101,7 +105,9 @@ export default {
           logo = body.logo;
           username = body.display_name;
 
-          console.log(body);
+          this.usernames.push(username);
+          localStorage.setItem('users', JSON.stringify(this.usernames));
+          console.log(this.users);
 
           return this.$http.get(this.api + this.newUser);
         })
@@ -125,6 +131,11 @@ export default {
     },
     deleteUser: function(username, arrayType) {
       this[arrayType] = this[arrayType].filter(user => user.username !== username);
+      this.usernames = this.usernames.filter(user => user !== username);
+
+      console.log(this.usernames);
+
+      localStorage.setItem('users', JSON.stringify(this.usernames));
     }
   }
 }

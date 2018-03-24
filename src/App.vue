@@ -116,6 +116,7 @@ export default {
           let user = body;
           user.logo = logo;
           user.username = username;
+
           if(!user.stream) {
             user.stream = { game: 'Offline' };
             this.offline.push(user)

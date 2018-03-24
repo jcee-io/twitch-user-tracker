@@ -13,34 +13,52 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, 'index.html')));
 
 app.get('/users', (req, res) => {
-	console.log('request made');
-	client.getAsync('users')
+	let globalIp;
+	publicIp.v4()
+	  .then(ip => {
+	  	console.log(ip);
+	  	globalIp = ip;
+	  	return client.getAsync(ip);
+	  })
 	  .then(data => {
-	  	data = data || "[]";
+	  	if(!data) {
+	  		data = data || "[]";
+	  	}
 	  	res.send(data);
+	  	return client.setAsync(globalIp, data);
 	  });
 });
 
 app.delete('/users/:username', (req, res) => {
-	client.getAsync('users')
+	let globalIp;
+	publicIp.v4()
+	  .then(ip => {
+	  	globalIp = ip;
+	  	return client.getAsync(ip);
+	  })
 	  .then(data => {
 	  	data = JSON.parse(data);
 	  	data = data.filter(username => username !== req.params.username);
 	  	data = JSON.stringify(data);
-	  	return client.setAsync('users', data);
+	  	return client.setAsync(globalIp, data);
 	  })
 	  .then(console.log);
 	  res.sendStatus(200);
 });
 
 app.post('/add/:newUser', (req, res) => {
-	console.log(req.params);
-	client.getAsync('users')
+	let globalIp;
+	publicIp.v4()
+	  .then(ip => {
+	  	globalIp = ip;
+	  	console.log(ip);
+	  	return client.getAsync(ip);
+	  })
 	  .then(data => {
 	  	data = JSON.parse(data);
 	  	data.push(req.params.newUser);
 	  	data = JSON.stringify(data);
-	  	return client.setAsync('users', data);
+	  	return client.setAsync(globalIp, data);
 	  })
 	  .then(console.log);
 	res.sendStatus(200);

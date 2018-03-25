@@ -154,7 +154,6 @@ export default {
   }
   body {
     background: green;
-    padding: 40px 70px;
   }
 
   form {
@@ -165,7 +164,8 @@ export default {
   }
   #main-box {
     background: rgba(255, 250, 181, 0.8);
-    height: 90vh;
+    height: 100vh;
+    width: 100vw;
     overflow: hidden;
   }
 
@@ -175,6 +175,9 @@ export default {
     margin: 4vh auto;
     height: auto;
     border-radius: 10px;
+    border-style: solid;
+    border-color: green;
+    border-width: 4px;
     overflow: hidden;
     background: rgba(255, 248, 160, 0.6);
   }

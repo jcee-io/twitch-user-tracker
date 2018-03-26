@@ -1,7 +1,11 @@
 # Twitch User Tracker
+LIVE LINK: http://twitch-tracker.herokuapp.com
 
-> This is orignally from the Vue CLI, but with an express server attached. 
-
+> This application will track a users activity on Twitch. There are some things to consider:
+> 1) Does not update in real time, this would require either a repeated setTimeout invocation or websockets with Twitch's servers
+> 2) Not mobile friendly, future update on that
+> 3) Redis caching uses your public ip as a key to maintain persistence of tracking users without collisions (still not a perfect solution)
+> 4) streamAPI abd usersAPI files are not included, please create these JS files and export a link with an empty endpoint  (i.e. instead of api.com/:username, you just export api.com/)
 ## Build Setup
 
 ``` bash

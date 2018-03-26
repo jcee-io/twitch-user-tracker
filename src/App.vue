@@ -4,12 +4,7 @@
       <div id="main-box-container">
         <heading :view="view" :loading="loading"></heading>
         <button-box v-on:switcher="switcher($event)"></button-box>
-        <div id="form-box">
-          <form v-on:submit.prevent="insertUser">
-            <input v-model="newUser" class="form-control">
-            <button class="btn btn-outline-dark">Add</button>
-          </form>
-        </div>
+        <add-user v-on:newUser="insertUser($event)"></add-user>
         <div id="mini-box">
           <h1 v-if="!(offline.length + online.length)">There are no users.</h1>
           <online-users v-on:delete="deleteUser($event, 'online')" v-if="!loading" :users="online" :view="view" :twitch="twitch"></online-users>
@@ -27,10 +22,13 @@ import Header from './Header'
 import ButtonBox from './ButtonBox'
 import OnlineUsers from './OnlineUsers'
 import OfflineUsers from './OfflineUsers'
+import AddUser from './AddUser'
+
 export default {
   components: {
     'heading': Header,
     'button-box': ButtonBox,
+    'add-user': AddUser,
     'online-users': OnlineUsers,
     'offline-users': OfflineUsers
   },
@@ -95,22 +93,20 @@ export default {
 
       d.logo = this.logos[i];
     },
-    insertUser: function(event) {
+    insertUser: function(username) {
       let logo;
-      let username;
 
-      this.$http.get(this.profileApi + this.newUser)
+      this.$http.get(this.profileApi + username)
         .then(({ body }) => {
           if(body.error) {
             throw 'Invalid User';
           }
 
           logo = body.logo;
-          username = body.display_name;
 
           this.usernames.push(username);
 
-          return this.$http.get(this.api + this.newUser);
+          return this.$http.get(this.api + username);
         })
         .then(({ body }) => {
           let user = body;
@@ -127,7 +123,7 @@ export default {
             this.online.push(user);   
           }    
 
-          return this.$http.post(`/add/${this.newUser}`);
+          return this.$http.post(`/add/${username}`);
         })
         .catch(e => {
           alert(e);

@@ -23,6 +23,8 @@ import ButtonBox from './ButtonBox'
 import OnlineUsers from './OnlineUsers'
 import OfflineUsers from './OfflineUsers'
 import AddUser from './AddUser'
+import StreamAPI from '../streamAPI'
+import UsersAPI from '../usersAPI'
 
 export default {
   components: {
@@ -42,8 +44,8 @@ export default {
       logos: [],
       view: 'All',
       loading: true,
-      api: 'https://wind-bow.glitch.me/twitch-api/streams/',
-      profileApi: 'https://wind-bow.glitch.me/twitch-api/users/'
+      api: StreamAPI,
+      profileApi: UsersAPI
     }
   },
   created(){

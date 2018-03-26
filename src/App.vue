@@ -4,7 +4,7 @@
       <div id="main-box-container">
         <heading :view="view" :loading="loading"></heading>
         <button-box v-on:switcher="switcher($event)"></button-box>
-        <add-user v-on:newUser="insertUser($event)"></add-user>
+        <add-user v-on:addUser="addUser($event[0], $event[1])"></add-user>
         <div id="mini-box">
           <h1 v-if="!(offline.length + online.length)">There are no users.</h1>
           <online-users v-on:delete="deleteUser($event, 'online')" v-if="!loading" :users="online" :view="view" :twitch="twitch"></online-users>
@@ -37,7 +37,6 @@ export default {
       users: ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"],
       usernames: [],
       twitch: 'http://twitch.tv/',
-      newUser: '',
       online: [],
       offline: [],
       logos: [],
@@ -93,41 +92,8 @@ export default {
 
       d.logo = this.logos[i];
     },
-    insertUser: function(username) {
-      let logo;
-
-      this.$http.get(this.profileApi + username)
-        .then(({ body }) => {
-          if(body.error) {
-            throw 'Invalid User';
-          }
-
-          logo = body.logo;
-
-          this.usernames.push(username);
-
-          return this.$http.get(this.api + username);
-        })
-        .then(({ body }) => {
-          let user = body;
-          user.logo = logo;
-          user.username = username;
-
-          if(!user.stream) {
-            user.stream = { game: 'Offline' };
-            this.offline.push(user)
-          } else {
-            if(user.stream.channel.status.length > 45) {
-              user.stream.channel.status = user.stream.channel.status.slice(0,45) + '...';
-            }
-            this.online.push(user);   
-          }    
-
-          return this.$http.post(`/add/${username}`);
-        })
-        .catch(e => {
-          alert(e);
-        });
+    addUser: function(user, arrayType) {
+      this[arrayType].push(user);
     },
     deleteUser: function(username, arrayType) {
       this[arrayType] = this[arrayType].filter(user => user.username !== username);

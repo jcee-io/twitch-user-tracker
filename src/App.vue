@@ -44,8 +44,6 @@ export default {
       logos: [],
       view: 'All',
       loading: true,
-      api: StreamAPI,
-      profileApi: UsersAPI
     }
   },
   created(){
@@ -58,8 +56,8 @@ export default {
         this.usernames = data.body;
 
       for(let user of this.users) {
-        promises.push(this.$http.get(this.api + user));
-        images.push(this.$http.get(this.profileApi + user));
+        promises.push(this.$http.get(StreamAPI + user));
+        images.push(this.$http.get(UsersAPI + user));
       }
 
         return Promise.all(promises);

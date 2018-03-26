@@ -4,7 +4,7 @@
       <div id="main-box-container">
         <heading :view="view" :loading="loading"></heading>
         <button-box v-on:switcher="switcher($event)"></button-box>
-        <add-user v-on:addUser="addUser($event[0], $event[1])"></add-user>
+        <add-user :usernames="usernames" v-on:addUser="addUser($event[0], $event[1])"></add-user>
         <div id="mini-box">
           <h1 v-if="!(offline.length + online.length)">There are no users.</h1>
           <online-users v-on:delete="deleteUser($event, 'online')" v-if="!loading" :users="online" :view="view" :twitch="twitch"></online-users>
@@ -94,6 +94,7 @@ export default {
     },
     addUser: function(user, arrayType) {
       this[arrayType].push(user);
+      this.usernames.push(user.username);
     },
     deleteUser: function(username, arrayType) {
       this[arrayType] = this[arrayType].filter(user => user.username !== username);
